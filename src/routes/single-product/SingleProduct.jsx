@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Attribute from "../../components/attributes/Attributes.jsx";
 import AddToCartButton from "../../components/AddToCartButton.jsx";
 import ProductShowcase from "./ProductShowcase.jsx";
@@ -41,11 +42,14 @@ const SingleProduct = ({ selectedCurrency, handleAddProduct, alertMessageMain, a
 
   }, [selectedCurrency, filterCurrency, allProducts, singleProduct.description]);
 
-  useEffect(() => {
-    const pathname = window.location.pathname.toString().substring(7);
-    getProductById(pathname);
+  const { id } = useParams();
 
-  }, [getProductById]);
+  useEffect(() => {
+    const targetId = id || window.location.pathname.split("/").filter(Boolean).pop();
+    if (targetId) {
+      getProductById(targetId);
+    }
+  }, [id, getProductById]);
 
 
 
